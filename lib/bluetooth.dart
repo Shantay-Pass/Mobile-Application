@@ -19,7 +19,7 @@ class _BluetoothState extends State<Bluetooth> {
   List<Widget> _detectedDevicesWidgets = new List();
   StreamSubscription<ScanResult> _btSubscription;
 
-  _BluetoothWidgetState() {
+  _BluetoothState() {
     _flutterBlue.state.listen((state) {
       switch(state) {
         case BluetoothState.on:
