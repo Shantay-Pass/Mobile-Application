@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mindstorms_app/bluetooth.dart';
+import 'package:mindstorms_app/web.dart';
 import 'package:mindstorms_app/settings.dart';
 import 'package:mindstorms_app/home.dart';
 import 'package:mindstorms_app/camera.dart';
@@ -33,6 +34,7 @@ class StartState extends State<Start> {
   final List<Widget> _children = [
     Home(),
     Camera(),
+    Http(),
     Bluetooth(),
     Settings(),
   ];
