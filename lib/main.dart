@@ -35,7 +35,7 @@ class StartState extends State<Start> {
     Home(),
     Camera(),
     Http(),
-    Bluetooth(),
+    //Bluetooth(),
     Settings(),
   ];
 
