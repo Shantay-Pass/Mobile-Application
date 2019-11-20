@@ -3,6 +3,8 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image/image.dart' as RealImage;
+import 'package:hello/hello.dart';
+import 'package:hello/image.dart';
 
 class Camera extends StatefulWidget {
   @override
@@ -15,22 +17,22 @@ class _CameraState extends State<Camera> {
   Future getImage() async {
     File image = await ImagePicker.pickImage(source: ImageSource.camera, maxHeight: 1000);
     RealImage.Image test = RealImage.decodeImage(image.readAsBytesSync());
-    // Don't touch anything above this Andreas!
 
-    // PictureReader PR = new PictureReader(test);
-    //RealImage.Image t = RealImage.trim(test, mode: RealImage.TrimMode.topLeftColor);
-    RealImage.Image t = _getBasePlate(_trimImage(test));
-    //print(t.height);
-    //print(t.width);
-    //t = _test(t);
+    List<Brick> registeredBricks = await Hello.getImageData(test);
 
-    // Don't touch anything below this Andreas!
+    List<String> instructions = Interpreter._itterateBricks(registeredBricks);
+
+    Hello.runProgram(instructions);
+
+    RealImage.Image t = test;
+
     image.writeAsBytesSync(RealImage.encodePng(t));
 
     setState(() {
       _image = image;
     });
   }
+
 
   static RealImage.Image _getBasePlate(RealImage.Image image) {
     int pX = -1;
@@ -126,6 +128,76 @@ class _CameraState extends State<Camera> {
         child: Icon(Icons.add_a_photo),
       ),
     );
+  }
+}
+
+class Interpreter {
+
+  static List<String> _itterateBricks(List<Brick> bricks){
+    List<String> commands;
+
+    for (int i = 0; i < bricks.length; i++){
+      commands.add(_brickColorFilter(bricks[i]));
+    }
+
+    return commands;
+  }
+
+  static String _brickColorFilter(Brick brick){
+    switch (brick.color){
+      case LegoColor.none:{
+        throw new Exception('No color assigned to detected brick!');
+      }
+      break;
+      case LegoColor.red:{
+        return RedBrick(brick.width, brick.height);
+      }
+      break;
+      case LegoColor.green:{
+        return GreenBrick(brick.width, brick.height);
+      }
+      break;
+      case LegoColor.blue:{
+        throw new Exception('No blue action implemented yet!');
+      }
+      break;
+      case LegoColor.yellow:{
+        return YellowBrick(brick.width, brick.height);
+      }
+      break;
+      case LegoColor.light_green:{
+        throw new Exception('No light green action implemented yet!');
+      }
+      break;
+    }
+  }
+
+  static String RedBrick(int x, int y){
+    //pause command
+    String command = "pause";
+    //seconds
+    command + " " + (x*y).toString();
+    return command;
+  }
+
+  static String YellowBrick(int x, int y){
+    //rotate command
+    String command = "rot";
+    //degrees??
+    command + " " + "90";
+    //seconds???
+    command + " " + "10";
+    return command;
+  }
+
+  static String GreenBrick(int x, int y){
+    //move command
+    String command = "mov";
+    //seconds
+    command + " " + (x*y).toString();
+    //speed
+    command + " " + "10";
+    return command;
   }
 }
 
