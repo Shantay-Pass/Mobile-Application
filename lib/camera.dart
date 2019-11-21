@@ -18,6 +18,9 @@ class _CameraState extends State<Camera> {
     File image = await ImagePicker.pickImage(source: ImageSource.camera, maxHeight: 1000);
     RealImage.Image test = RealImage.decodeImage(image.readAsBytesSync());
 
+    Hello.basePlateColor = LegoColor.blue;
+    Hello.basePlateWidth = 8;
+
     List<Brick> registeredBricks = await Hello.getImageData(test);
 
     List<String> instructions = Interpreter._itterateBricks(registeredBricks);
@@ -176,7 +179,7 @@ class Interpreter {
     //pause command
     String command = "pause";
     //seconds
-    command + " " + (x*y).toString();
+    command += " " + (x*y).toString();
     return command;
   }
 
@@ -184,9 +187,9 @@ class Interpreter {
     //rotate command
     String command = "rot";
     //degrees??
-    command + " " + "90";
+    command += " " + "90";
     //seconds???
-    command + " " + "10";
+    command += " " + "10";
     return command;
   }
 
@@ -194,9 +197,9 @@ class Interpreter {
     //move command
     String command = "mov";
     //seconds
-    command + " " + (x*y).toString();
+    command += " " + (x*y).toString();
     //speed
-    command + " " + "10";
+    command += " " + "10";
     return command;
   }
 }
