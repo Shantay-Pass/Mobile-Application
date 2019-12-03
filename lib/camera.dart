@@ -12,28 +12,45 @@ class Camera extends StatefulWidget {
 }
 
 class _CameraState extends State<Camera> {
-  File _image;
+  Image _image;
 
   Future getImage() async {
     File image = await ImagePicker.pickImage(source: ImageSource.camera, maxHeight: 1000);
     RealImage.Image test = RealImage.decodeImage(image.readAsBytesSync());
 
     Hello.basePlateColor = LegoColor.blue;
+    //Hello.webApiHost = "192.168.0.13:5000";
+    Hello.webApiHost = "192.168.0.12:5000";
     Hello.basePlateWidth = 8;
 
+    var lol = await Hello.pingApi();
+    print('API ping: ' + lol.resultMessage);
+
+    print('Getting image data from plugin.');
     List<Brick> registeredBricks = await Hello.getImageData(test);
 
+    if(registeredBricks.length == 0){
+      setState(() {
+        _image = Image.memory(RealImage.encodePng(ImageAnalysis.debugImage));;
+      });
+      return;
+    }
+
+    print('Converting image instructions');
     List<String> instructions = Interpreter._itterateBricks(registeredBricks);
 
+    print('Sending instructions to API');
+    print('Instructions: ' + instructions.toString());
     Hello.runProgram(instructions);
 
+    print('sending image to widget');
     RealImage.Image t = test;
 
     image.writeAsBytesSync(RealImage.encodePng(t));
 
-    setState(() {
-      _image = image;
-    });
+    //setState(() {
+    //  _image = image;
+    //});
   }
 
 
@@ -123,7 +140,7 @@ class _CameraState extends State<Camera> {
       body: Center(
         child: _image == null
             ? Text('No image selected.')
-            : Image.file(_image),
+            : _image,
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: getImage,
@@ -137,70 +154,165 @@ class _CameraState extends State<Camera> {
 class Interpreter {
 
   static List<String> _itterateBricks(List<Brick> bricks){
-    List<String> commands;
+    List<String> commands = new List<String>();
 
     for (int i = 0; i < bricks.length; i++){
-      commands.add(_brickColorFilter(bricks[i]));
+      print('Brick number: ' + i.toString() + ',');
+      commands.addAll(_brickColorFilter(bricks[i]));
     }
 
     return commands;
   }
 
-  static String _brickColorFilter(Brick brick){
+  static List<String> _brickColorFilter(Brick brick){
     switch (brick.color){
       case LegoColor.none:{
         throw new Exception('No color assigned to detected brick!');
       }
       break;
       case LegoColor.red:{
-        return RedBrick(brick.width, brick.height);
+        print('Color: Red,');
+        print('X: ' + brick.width.toString() + ' Y: ' + brick.height.toString());
+        return RedBrickMono(brick.width, brick.height);
       }
       break;
       case LegoColor.green:{
+        print('Color: Green,');
+        print('X: ' + brick.width.toString() + ' Y: ' + brick.height.toString());
         return GreenBrick(brick.width, brick.height);
       }
       break;
       case LegoColor.blue:{
+        print('Color: Blue,');
+        print('X: ' + brick.width.toString() + ' Y: ' + brick.height.toString());
         throw new Exception('No blue action implemented yet!');
       }
       break;
       case LegoColor.yellow:{
+        print('Color: Yellow,');
+        print('X: ' + brick.width.toString() + ' Y: ' + brick.height.toString());
         return YellowBrick(brick.width, brick.height);
       }
       break;
       case LegoColor.light_green:{
-        throw new Exception('No light green action implemented yet!');
+        print('Color: Light Green,');
+        print('X: ' + brick.width.toString() + ' Y: ' + brick.height.toString());
+        return GreenBrick(brick.width, brick.height);
       }
       break;
     }
   }
 
-  static String RedBrick(int x, int y){
+  static List<String> RedBrick(int x, int y){
+
+    List<String> returnList = new List<String>();
+    String voiceCommand = "say pausing";
+
     //pause command
     String command = "pause";
     //seconds
     command += " " + (x*y).toString();
-    return command;
+
+    returnList.add(voiceCommand);
+    returnList.add(command);
+
+    return returnList;
   }
 
-  static String YellowBrick(int x, int y){
+  static List<String> RedBrickMono(int x, int y){
+
+    List<String> returnList = new List<String>();
+    String voiceCommand;
+    String command;
+
+    if(x == 2 && y == 2){
+      //voice command
+      voiceCommand = "say moving";
+      //move command
+      command = "mov";
+      //speed
+      command += " " + "50";
+      //seconds
+      command += " 5";
+    }
+    else if (x == 2 && y == 1){
+      //voice command
+      voiceCommand = "say rotating left";
+      //rotate command
+      command = "rot";
+      //speed??
+      command += " " + "50";
+      //degrees???
+      command += " " + "90";
+    }
+    else if (x == 1 && y == 2){
+      //voice command
+      voiceCommand = "say rotating right";
+      //rotate command
+      command = "rot";
+      //speed??
+      command += " " + "50";
+      //degrees???
+      command += " " + "-90";
+    }
+    else if (x == 1 && y == 1){
+      //voice command
+      voiceCommand = "say pause";
+      //rotate command
+      command = "pause";
+      //seconds
+      command += " " + "1";
+    }
+
+    returnList.add(voiceCommand);
+    returnList.add(command);
+
+    return returnList;
+  }
+
+  static List<String> YellowBrick(int x, int y){
+
+    List<String> returnList = new List<String>();
+    String voiceCommand = "say rotating";
+
     //rotate command
     String command = "rot";
-    //degrees??
+    //speed??
+    command += " " + "50";
+    //degrees???
     command += " " + "90";
-    //seconds???
-    command += " " + "10";
-    return command;
+
+    returnList.add(voiceCommand);
+    returnList.add(command);
+
+    return returnList;
   }
 
-  static String GreenBrick(int x, int y){
+  // voice feedback
+  // mono color bricks
+  // box enclosure
+  // illicitation study (call it a design workshop)
+  // take contact with blind people
+  // bricklink
+  // work out coding schemes using related works
+
+
+  static List<String> GreenBrick(int x, int y){
+
+    List<String> returnList = new List<String>();
+    String voiceCommand = "say moving";
+
     //move command
     String command = "mov";
     //seconds
-    command += " " + (x*y).toString();
+    command += " " + "50";
     //speed
-    command += " " + "10";
-    return command;
+    command += " " + ((x*y)*10*2).toString();
+
+    returnList.add(voiceCommand);
+    returnList.add(command);
+
+    return returnList;
   }
 }
 
