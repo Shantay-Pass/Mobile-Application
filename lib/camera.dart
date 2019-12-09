@@ -20,7 +20,7 @@ class _CameraState extends State<Camera> {
 
     Hello.basePlateColor = LegoColor.blue;
     //Hello.webApiHost = "192.168.0.13:5000";
-    Hello.webApiHost = "192.168.0.12:5000";
+    Hello.webApiHost = "192.168.0.13:5000";
     Hello.basePlateWidth = 8;
 
     var lol = await Hello.pingApi();
@@ -227,13 +227,13 @@ class Interpreter {
 
     if(x == 2 && y == 2){
       //voice command
-      voiceCommand = "say moving";
+      voiceCommand = "say moving forward";
       //move command
       command = "mov";
       //speed
       command += " " + "50";
-      //seconds
-      command += " 5";
+      //distance
+      command += " " + "500";
     }
     else if (x == 2 && y == 1){
       //voice command

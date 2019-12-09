@@ -16,7 +16,7 @@ class Http extends StatefulWidget {
 class _HttpState extends State<Http> {
   String title = "EV3 Controls";
   String response;
-  String baseUri = "http://192.168.0.12:5000";
+  String baseUri = "http://192.168.0.13:5000";
 
   String status = "Ready";
 
