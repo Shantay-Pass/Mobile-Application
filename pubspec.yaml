@@ -1,5 +1,5 @@
-name: mindstorms_app
-description: A new Flutter project.
+name: tim_example
+description: This is an example implementation of the TIM (Tangible Interface for Mindstorm) framework developed by two 9th semester students from Aalborg University.
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
@@ -19,8 +19,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  audioplayers: ^0.13.2
-  http: ^0.12.0+2
   image: ^2.1.8
   image_picker:  ^0.6.1+10
   hello:

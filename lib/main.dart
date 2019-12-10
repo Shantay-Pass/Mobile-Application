@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:mindstorms_app/bluetooth.dart';
-import 'package:mindstorms_app/web.dart';
-import 'package:mindstorms_app/settings.dart';
-import 'package:mindstorms_app/home.dart';
-import 'package:mindstorms_app/camera.dart';
+
+import 'camera_widget.dart';
+import 'settings_widget.dart';
 
 
 void main() => runApp(Main());
@@ -12,7 +10,7 @@ class Main extends StatelessWidget {
 
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'PORNO ER GODT FOR SJÆLEN',
+      title: 'Tangible Interface for Mindstorm',
       theme: ThemeData(
           primarySwatch: Colors.blue
       ),
@@ -32,10 +30,7 @@ class StartState extends State<Start> {
   int _tabbedButton =0;
 
   final List<Widget> _children = [
-    Home(),
     Camera(),
-    Http(),
-    //Bluetooth(),
     Settings(),
   ];
 
@@ -54,7 +49,7 @@ class StartState extends State<Start> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('LEGO Visual Aid'),
+        title: Text('Tangible Interface for Mindstorm'),
       ),
 
       body: _children[_currentIndex], // new
