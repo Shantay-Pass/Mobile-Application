@@ -9,7 +9,7 @@ import 'package:image/image.dart' as Duncan;
 
 import 'interpreter.dart';
 
-class Camera extends StatelessWidget {
+class CameraWidget extends StatelessWidget {
   void _onCameraButtonPressed() async {
     File image = await ImagePicker.pickImage(source: ImageSource.camera, );
     

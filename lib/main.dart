@@ -30,8 +30,8 @@ class StartState extends State<Start> {
   int _tabbedButton =0;
 
   final List<Widget> _children = [
-    Camera(),
-    Settings(),
+    CameraWidget(),
+    SettingsWidget(),
   ];
 
   void onTabTapped(int index) {

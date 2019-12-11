@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:hello/hello.dart';
 import 'package:hello/image.dart';
 
-class Settings extends StatefulWidget {
-  Settings({Key key}) : super(key: key);
+class SettingsWidget extends StatefulWidget {
+  SettingsWidget({Key key}) : super(key: key);
 
   @override
-  _SettingsState createState() => _SettingsState();
+  _SettingsWidgetState createState() => _SettingsWidgetState();
 }
 
-class _SettingsState extends State<Settings> {
+class _SettingsWidgetState extends State<SettingsWidget> {
   LegoColor _colorField = Hello.basePlateColor;
 
   List<DropdownMenuItem<LegoColor>> items = [DropdownMenuItem(child: Text("Grey"), value: LegoColor.none), DropdownMenuItem(child: Text("Red"), value: LegoColor.red), DropdownMenuItem(child: Text("Green"), value: LegoColor.green), DropdownMenuItem(child: Text("Blue"), value: LegoColor.blue)];
@@ -45,7 +45,8 @@ class _SettingsState extends State<Settings> {
                 TextField(
                   onChanged: _hostnameFieldChanged,
                   decoration: InputDecoration(
-                    hintText: "Mindstorm IPv4 address",
+                    labelText: "Mindstorm Hostname",
+                    hintText: Hello.webApiHost,
                   ),
                 ),
                 Text("Baseplate color:"),
@@ -58,7 +59,8 @@ class _SettingsState extends State<Settings> {
                   keyboardType: TextInputType.number,
                   onChanged: _updateBaseplateWidth,
                   decoration: InputDecoration(
-                    hintText: "Baseplate width (cm)"
+                    labelText: "Baseplate width (cm)",
+                    hintText: Hello.basePlateWidth.toString()
                   ),
                 )
               ],
